@@ -1,5 +1,6 @@
 import path from 'path';
 import { WebpackConfiguration } from 'webpack-dev-server';
+import config from '../plugins/babel-plugin-sage-jsx'
 
 const defaultConfig: WebpackConfiguration = {
     stats: 'none',
@@ -36,6 +37,8 @@ export const devConfig: WebpackConfiguration = {
     }
 };
 
+// TODO: Have a sage.config.ts, that contains config you want,
+// like scss or css support, which adds loaders
 export const tsDevConfig: WebpackConfiguration = {
     ...defaultConfig,
     mode: 'development',
@@ -57,16 +60,44 @@ export const tsDevConfig: WebpackConfiguration = {
                     {
                         loader: 'babel-loader',
                         options: {
-                            presets: ["@babel/preset-env"],
+                            presets: [
+                                "@babel/preset-env", 
+                                "@babel/preset-typescript"
+                            ],
                             plugins: [
-                                ["@babel/plugin-transform-react-jsx", {
-                                    "pragma": "Sage.createElement"
-                                }]
+                                [config]
                             ]
                         },
                     },
-                    'ts-loader',
                 ],
+            },
+            {
+                test: /\.css$/,
+                use: ['style-loader', 'css-loader'],
+            },
+            {
+                test: /\.scss$/,
+                use: [require.resolve('style-loader'), 'css-loader', 'sass-loader'],
+            },
+            {
+                test: /\.module\.css$/,
+                use: [
+                    'style-loader',
+                    {
+                        loader: 'css-loader',
+                        options: {
+                            modules: {
+                                localIdentName: '[name]__[local]--[hash:base64:5]',
+                            },
+                        },
+                    },
+                ],
+            },
+            {
+                test: /\.m?js/,
+                resolve: {
+                    fullySpecified: false,
+                },
             },
         ],
     }
