@@ -1,6 +1,6 @@
 import path from 'path';
 import { WebpackConfiguration } from 'webpack-dev-server';
-import config from '../plugins/babel-plugin-sage-jsx'
+import { mainPlugin } from 'sage-babel-plugin';
 
 const defaultConfig: WebpackConfiguration = {
     stats: 'none',
@@ -65,7 +65,7 @@ export const tsDevConfig: WebpackConfiguration = {
                                 "@babel/preset-typescript"
                             ],
                             plugins: [
-                                [config]
+                                [mainPlugin]
                             ]
                         },
                     },
