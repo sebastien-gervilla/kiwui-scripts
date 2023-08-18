@@ -1,6 +1,6 @@
 import path from 'path';
 import { WebpackConfiguration } from 'webpack-dev-server';
-import { mainPlugin } from 'sage-babel-plugin';
+import { cssModuleRule, cssRule, jsRule, scssRule, tsRule } from './rules';
 
 const defaultConfig: WebpackConfiguration = {
     stats: 'none',
@@ -28,6 +28,10 @@ export const devConfig: WebpackConfiguration = {
     },
     module: {
         rules: [
+            jsRule,
+            cssRule,
+            scssRule,
+            cssModuleRule,
             {
                 test: /\.(js|jsx)$/,
                 exclude: /node_modules/,
@@ -53,97 +57,10 @@ export const tsDevConfig: WebpackConfiguration = {
     },
     module: {
         rules: [
-            {
-                test: /\.(ts|tsx)$/,
-                exclude: /node_modules/,
-                use: [
-                    {
-                        loader: 'babel-loader',
-                        options: {
-                            presets: [
-                                "@babel/preset-env", 
-                                "@babel/preset-typescript"
-                            ],
-                            plugins: [
-                                [mainPlugin]
-                            ]
-                        },
-                    },
-                ],
-            },
-            {
-                test: /\.css$/,
-                use: ['style-loader', 'css-loader'],
-            },
-            {
-                test: /\.scss$/,
-                use: [
-                    require.resolve('style-loader'), 
-                    {
-                        loader: require.resolve('css-loader'),
-                        options: {
-                            importLoaders: 3,
-                            sourceMap: true,
-                            modules: {
-                                mode: 'icss',
-                            },
-                        },
-                    },
-                    {
-                        // Options for PostCSS as we reference these options twice
-                        // Adds vendor prefixing based on your specified browser support in package.json
-                        loader: require.resolve('postcss-loader'),
-                        options: {
-                            postcssOptions: {
-                                ident: 'postcss',
-                                config: false,
-                                plugins: [
-                                    'postcss-flexbugs-fixes',
-                                    [
-                                        'postcss-preset-env',
-                                        {
-                                            autoprefixer: {
-                                                flexbox: 'no-2009',
-                                            },
-                                            stage: 3,
-                                        },
-                                    ],
-                                    // Resets css with default options, 
-                                    // which allows support for browserslist (package.json)
-                                    'postcss-normalize',
-                                ]
-                            },
-                            sourceMap: true,
-                        },
-                    },
-                    {
-                        loader: require.resolve('resolve-url-loader'),
-                        options: {
-                            sourceMap: true,
-                        }
-                    },
-                    {
-                        loader: require.resolve('sass-loader'),
-                        options: {
-                            sourceMap: true,
-                        }
-                    }
-                ],
-            },
-            {
-                test: /\.module\.css$/,
-                use: [
-                    'style-loader',
-                    {
-                        loader: 'css-loader',
-                        options: {
-                            modules: {
-                                localIdentName: '[name]__[local]--[hash:base64:5]',
-                            },
-                        },
-                    },
-                ],
-            },
+            tsRule,
+            cssRule,
+            scssRule,
+            cssModuleRule,
             {
                 test: /\.m?js/,
                 resolve: {
