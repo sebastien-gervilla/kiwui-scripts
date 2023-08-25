@@ -1,7 +1,9 @@
 import { mainPlugin } from 'sage-babel-plugin';
+import { paths } from '../paths.config';
 
-export const jsRule = {
+export const getJavascriptRule = (isProduction: boolean) => ({
     test: /\.(js|jsx)$/,
+    include: paths.src,
     exclude: /node_modules/,
     use: [
         {
@@ -12,8 +14,9 @@ export const jsRule = {
                 ],
                 plugins: [
                     [mainPlugin]
-                ]
+                ],
+                compact: isProduction
             },
         },
     ],
-}
+});
