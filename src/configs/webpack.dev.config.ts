@@ -11,6 +11,7 @@ import { ProjectConfig } from "../types/config";
 import { InterpolateHtmlPlugin, ModuleScopePlugin } from "./plugins";
 import TsCheckerPlugin from 'fork-ts-checker-webpack-plugin';
 import resolve from "resolve";
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 
 // TODO: Importing files from outside /src should be prevented
 // TODO: Devtools
@@ -120,6 +121,11 @@ export const getDevelopmentConfig = ({ useTypescript, webpackAliases, environmen
         new HtmlWebpackPlugin({
             inject: true,
             template: paths.html
+        }),
+        // TODO: Remove this from dev when possible (currently causes errors)
+        new MiniCssExtractPlugin({
+            filename: 'static/css/[name].css',
+            chunkFilename: 'static/css/[name].chunk.css',
         }),
         new InterpolateHtmlPlugin(environment.application),
         new webpack.DefinePlugin(environment.applicationStringyfied),

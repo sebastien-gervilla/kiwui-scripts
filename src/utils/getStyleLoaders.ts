@@ -7,15 +7,15 @@ export const getStyleLoaders = (cssOptions: Object, isEnvProduction: boolean, us
     if (!isEnvProduction)
         loaders.push(require.resolve('style-loader'));
 
-    if (isEnvProduction)
-        loaders.push({
-            loader: MiniCssExtractPlugin.loader,
-            // css is located in `static/css`, use '../../' to locate index.html folder
-            // in production `paths.publicUrlOrPath` can be a relative path
-            options: paths.publicUrlOrPath.startsWith('.')
-              ? { publicPath: '../../' }
-              : {},
-        });
+    // TODO: Remove this from dev when possible (currently causes errors)
+    loaders.push({
+        loader: MiniCssExtractPlugin.loader,
+        // css is located in `static/css`, use '../../' to locate index.html folder
+        // in production `paths.publicUrlOrPath` can be a relative path
+        options: paths.publicUrlOrPath.startsWith('.')
+            ? { publicPath: '../../' }
+            : {},
+    });
 
     // CSS Loader
     loaders.push(
