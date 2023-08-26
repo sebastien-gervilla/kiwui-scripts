@@ -22,8 +22,6 @@ export const start = () => {
         hot: true
     };
 
-    console.log(JSON.stringify(projectConfig.environment.application))
-
     const compiler = webpack(config);
     const devServer = new WebpackDevServer(devServerOptions, compiler);
 
