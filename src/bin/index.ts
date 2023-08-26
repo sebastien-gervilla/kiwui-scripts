@@ -1,9 +1,14 @@
 #!/usr/bin/env node
 
-import { start } from "../scripts";
+import { build, start } from "../scripts";
 import { Command } from "../types";
 
-const COMMANDS: Command[] = ['start'];
+const COMMANDS: Command[] = ['start', 'build'];
+
+// Throws error instead of ignoring it.
+process.on('unhandledRejection', error => {
+    throw error;
+});
 
 (() => {
     const args = process.argv.slice(2);
@@ -12,6 +17,16 @@ const COMMANDS: Command[] = ['start'];
     if (!COMMANDS.includes(command))
         throw new Error("Command doesn't exist.")
 
-    if (command === 'start')
-        return start();
+    switch (command) {
+        case 'start':
+            start();
+            break;
+
+        case 'build':
+            build();
+            break;
+    
+        default:
+            break;
+    }
 })();

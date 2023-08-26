@@ -1,5 +1,6 @@
-export { jsRule } from './javascript.rule';
-export { tsRule } from './typescript.rule';
-export { scssRule } from './scss.rule';
-export { cssRule } from './css.rule';
-export { cssModuleRule } from './cssModule.rule';
+export { getJavascriptRule } from './javascript.rule';
+export { getTypescriptRule } from './typescript.rule';
+export { getCssRule } from './css.rule';
+export { getCssModuleRule } from './cssModule.rule';
+export { getSassRule } from './sass.rule';
+export { getSassModuleRule } from './sassModule.rule';

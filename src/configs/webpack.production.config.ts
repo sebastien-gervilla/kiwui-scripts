@@ -6,30 +6,32 @@ import TerserPlugin from "terser-webpack-plugin";
 import CssMinimizerPlugin from "css-minimizer-webpack-plugin";
 import { MODULE_EXTENSIONS } from "../utils/file.utils"
 import HtmlWebpackPlugin from "html-webpack-plugin";
+import MiniCssExtractPlugin from "mini-css-extract-plugin";
 import * as Rules from "./rules";
 import { ProjectConfig } from "../types/config";
 import { InterpolateHtmlPlugin, ModuleScopePlugin } from "./plugins";
 import TsCheckerPlugin from 'fork-ts-checker-webpack-plugin';
 import resolve from "resolve";
-import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import WorkboxWebpackPlugin from 'workbox-webpack-plugin';
+import { existsSync } from 'fs';
 
 // TODO: Importing files from outside /src should be prevented
 // TODO: Devtools
-export const getDevelopmentConfig = ({ useTypescript, webpackAliases, environment }: ProjectConfig): WebpackConfiguration => ({
+export const getProductionConfig = ({ useTypescript, webpackAliases, environment }: ProjectConfig): WebpackConfiguration => ({
     ...loggingConfig,
-    mode: 'development',
-    bail: false,
+    mode: 'production',
+    bail: true,
     entry: paths.index,
     output: {
         path: paths.build,
-        filename: 'static/js/bundle.js',
-        chunkFilename: 'static/js/[name].chunk.js',
+        filename: 'static/js/[name].[contenthash:8].js',
+        chunkFilename: 'static/js/[name].[contenthash:8].chunk.js',
         assetModuleFilename: 'static/media/[name].[hash][ext]',
         publicPath: paths.publicUrlOrPath,
     },
     // TODO: Cache
     optimization: {
-        minimize: false,
+        minimize: true,
         minimizer: [
             new TerserPlugin({
                 extractComments: false,
@@ -120,21 +122,39 @@ export const getDevelopmentConfig = ({ useTypescript, webpackAliases, environmen
     plugins: [
         new HtmlWebpackPlugin({
             inject: true,
-            template: paths.html
-        }),
-        // TODO: Remove this from dev when possible (currently causes errors)
-        new MiniCssExtractPlugin({
-            filename: 'static/css/[name].css',
-            chunkFilename: 'static/css/[name].chunk.css',
+            template: paths.html,
+            minify: {
+                removeComments: true,
+                collapseWhitespace: true,
+                removeRedundantAttributes: true,
+                useShortDoctype: true,
+                removeEmptyAttributes: true,
+                removeStyleLinkTypeAttributes: true,
+                keepClosingSlash: true,
+                minifyJS: true,
+                minifyCSS: true,
+                minifyURLs: true,
+            },
         }),
         new InterpolateHtmlPlugin(environment.application),
         new webpack.DefinePlugin(environment.applicationStringyfied),
+        new MiniCssExtractPlugin({
+            filename: 'static/css/[name].[contenthash:8].css',
+            chunkFilename: 'static/css/[name].[contenthash:8].chunk.css',
+        }),
         // Optimize when using moment.js
         // https://github.com/jmblog/how-to-optimize-momentjs-with-webpack
         new webpack.IgnorePlugin({
             resourceRegExp: /^\.\/locale$/,
             contextRegExp: /moment$/,
         }),
+        existsSync(paths.serviceWorker) &&
+            new WorkboxWebpackPlugin.InjectManifest({
+                swSrc: paths.serviceWorker,
+                dontCacheBustURLsMatching: /\.[0-9a-f]{8}\./,
+                exclude: [/\.map$/, /asset-manifest\.json$/, /LICENSE/],
+                maximumFileSizeToCacheInBytes: 5 * 1024 * 1024,
+            }),
         // TODO: More of them
         useTypescript &&
             new TsCheckerPlugin({
@@ -145,7 +165,7 @@ export const getDevelopmentConfig = ({ useTypescript, webpackAliases, environmen
                     }),
                     configOverwrite: {
                         compilerOptions: {
-                            sourceMap: IS_PRODUCTION,
+                            sourceMap: environment.useSourceMap,
                             skipLibCheck: true,
                             inlineSourceMap: false,
                             declarationMap: false,
@@ -179,4 +199,4 @@ export const getDevelopmentConfig = ({ useTypescript, webpackAliases, environmen
 
 // TODO: Merge dev and prod configs ?
 // For better readability
-const IS_PRODUCTION = false;
+const IS_PRODUCTION = true;
