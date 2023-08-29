@@ -1,7 +1,7 @@
-import escape from 'escape-string-regexp';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import { Environment } from '../../types/config';
 import { Compilation, Compiler } from 'webpack';
+import escape from '../../utils/escapeStringRegex';
 
 export default class InterpolateHtmlPlugin {
     constructor(public replacements: Environment) {}
@@ -23,5 +23,3 @@ export default class InterpolateHtmlPlugin {
         });
     }
 }
-
-module.exports = InterpolateHtmlPlugin;

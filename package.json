@@ -9,7 +9,6 @@
     "javascript",
     "typescript"
   ],
-
   "main": "index.js",
   "bin": {
     "kiwui-scripts": "dist/bin/index.js"
@@ -19,12 +18,10 @@
     "README.md",
     "LICENSE"
   ],
-
   "scripts": {
     "build": "tsc",
     "reset:plugin": "rmdir /s /q node_modules\\kiwui-babel-plugin && npm i"
   },
-
   "devDependencies": {
     "@babel/plugin-syntax-dynamic-import": "^7.8.3",
     "@types/babel__core": "^7.20.1",
@@ -45,18 +42,17 @@
     "css-minimizer-webpack-plugin": "^5.0.1",
     "dotenv": "^16.3.1",
     "dotenv-expand": "^10.0.0",
-    "escape-string-regexp": "^5.0.0",
     "express": "^4.18.2",
     "fork-ts-checker-webpack-plugin": "^8.0.0",
     "fs-extra": "^11.1.1",
     "html-webpack-plugin": "^5.5.3",
+    "kiwui": "file:../kiwui",
+    "kiwui-babel-plugin": "file:../kiwui-babel-plugin",
     "mini-css-extract-plugin": "^2.7.6",
     "path": "^0.12.7",
     "postcss-loader": "^7.3.3",
     "resolve": "^1.22.4",
     "resolve-url-loader": "^5.0.0",
-    "kiwui": "file:../kiwui",
-    "kiwui-babel-plugin": "file:../kiwui-babel-plugin",
     "sass-loader": "^13.3.2",
     "source-map-loader": "^4.0.1",
     "style-loader": "^3.3.3",
@@ -67,7 +63,6 @@
     "webpack-dev-server": "^4.15.1",
     "workbox-webpack-plugin": "^7.0.0"
   },
-
   "homepage": "https://github.com/sebastien-gervilla/kiwui-scripts#readme",
   "repository": {
     "type": "git",
