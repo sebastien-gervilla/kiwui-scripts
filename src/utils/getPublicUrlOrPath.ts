@@ -2,7 +2,7 @@ import { URL } from "url";
 
 export const getPublicUrlOrPath = (isEnvDevelopment: boolean, homepage: string, envPublicUrl?: string) => {
     // Placehodler domain used to validate other urls / paths
-    const validDomain = 'https://create-sage-app.dev';
+    const validDomain = 'https://create-kiwui-app.dev';
 
     if (envPublicUrl) {
         // Ensure last slash exists

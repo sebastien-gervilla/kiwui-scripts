@@ -2,7 +2,7 @@
     "presets": ["@babel/preset-env"],
     "plugins": [
         ["@babel/plugin-transform-react-jsx", {
-            "pragma": "Sage.createElement"
+            "pragma": "Kiwui.createElement"
         }]
     ]
 }

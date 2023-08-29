@@ -1,4 +1,4 @@
-import { mainPlugin } from 'sage-babel-plugin';
+import { transformJSX } from 'kiwui-babel-plugin';
 import { paths } from '../paths.config';
 
 export const getTypescriptRule = (isProduction: boolean) => ({
@@ -14,7 +14,7 @@ export const getTypescriptRule = (isProduction: boolean) => ({
                     "@babel/preset-typescript"
                 ],
                 plugins: [
-                    [mainPlugin]
+                    [transformJSX]
                 ],
                 compact: isProduction
             },

@@ -1,4 +1,4 @@
-import { mainPlugin } from 'sage-babel-plugin';
+import { transformJSX } from 'kiwui-babel-plugin';
 import { paths } from '../paths.config';
 
 export const getJavascriptRule = (isProduction: boolean) => ({
@@ -13,7 +13,7 @@ export const getJavascriptRule = (isProduction: boolean) => ({
                     "@babel/preset-env"
                 ],
                 plugins: [
-                    [mainPlugin]
+                    [transformJSX]
                 ],
                 compact: isProduction
             },

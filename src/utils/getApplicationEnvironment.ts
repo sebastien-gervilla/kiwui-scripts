@@ -6,7 +6,7 @@ export const getApplicationEnvironment = () => {
 
     let applicationEnvironment: Environment = {
         // Useful for determining whether we’re running in production mode.
-        // Most importantly, it switches Sage into the correct mode.
+        // Most importantly, it switches Kiwui into the correct mode.
         NODE_ENV: process.env.NODE_ENV || 'development',
 
         // Useful for resolving the correct path to static assets in `public`.
@@ -34,4 +34,4 @@ export const getApplicationEnvironment = () => {
     };
 }
 
-const SAGE_APP_REGEX = /^SAGE_APP_/i;
+const KIWUI_APP_REGEX = /^KIWUI_APP_/i;
