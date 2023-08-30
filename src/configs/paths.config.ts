@@ -33,6 +33,7 @@ export const paths = {
     // Modules
     modules: resolveRoot('node_modules'),
     webpackCache: resolveRoot('node_modules/.cache'),
+    tsBuildInfoFile: resolveRoot('node_modules/.cache/tsconfig.tsbuildinfo'),
 
     // Config
     dotenv: resolveRoot('.env'),

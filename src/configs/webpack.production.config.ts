@@ -14,8 +14,8 @@ import TsCheckerPlugin from 'fork-ts-checker-webpack-plugin';
 import resolve from "resolve";
 import WorkboxWebpackPlugin from 'workbox-webpack-plugin';
 import { existsSync } from 'fs';
+import { createEnvironmentHash } from '../utils/createEnvironmentHash';
 
-// TODO: Importing files from outside /src should be prevented
 // TODO: Devtools
 export const getProductionConfig = ({ useTypescript, webpackAliases, environment }: ProjectConfig): WebpackConfiguration => ({
     ...loggingConfig,
@@ -29,7 +29,19 @@ export const getProductionConfig = ({ useTypescript, webpackAliases, environment
         assetModuleFilename: 'static/media/[name].[hash][ext]',
         publicPath: paths.publicUrlOrPath,
     },
-    // TODO: Cache
+    cache: {
+        type: 'filesystem',
+        version: createEnvironmentHash(environment.application),
+        cacheDirectory: paths.webpackCache,
+        store: 'pack',
+        buildDependencies: {
+            defaultWebpack: ['webpack/lib/'],
+            config: [__filename],
+            tsconfig: [paths.tsConfig, paths.jsConfig].filter(
+                file => existsSync(file)
+            ),
+        },
+    },
     optimization: {
         minimize: true,
         minimizer: [
@@ -155,7 +167,6 @@ export const getProductionConfig = ({ useTypescript, webpackAliases, environment
                 exclude: [/\.map$/, /asset-manifest\.json$/, /LICENSE/],
                 maximumFileSizeToCacheInBytes: 5 * 1024 * 1024,
             }),
-        // TODO: More of them
         useTypescript &&
             new TsCheckerPlugin({
                 async: IS_PRODUCTION,
@@ -171,7 +182,7 @@ export const getProductionConfig = ({ useTypescript, webpackAliases, environment
                             declarationMap: false,
                             noEmit: true,
                             incremental: true,
-                            // tsBuildInfoFile: paths.tsBuildInfoFile TODO: Cache
+                            tsBuildInfoFile: paths.tsBuildInfoFile
                         },
                     },
                     context: paths.root,
@@ -194,6 +205,7 @@ export const getProductionConfig = ({ useTypescript, webpackAliases, environment
                     ],
                 }
             }),
+        // TODO: ESLINT
     ].filter(Boolean)
 });
 
