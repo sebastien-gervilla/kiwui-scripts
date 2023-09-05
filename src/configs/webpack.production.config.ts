@@ -94,15 +94,14 @@ export const getProductionConfig = ({ useTypescript, webpackAliases, environment
                 oneOf: [
                     // TODO: Avif Support
                     {
-                        test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/],
+                        test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/, /\.svg$/],
                         type: 'asset',
                         parser: {
                             dataUrlCondition: {
-                                maxSize: '10000', // TODO: Let user decide
+                                maxSize: 10000, // TODO: Let user decide
                             },
                         },
                     },
-                    // TODO: SVG Support
                     useTypescript
                         ? Rules.getTypescriptRule(IS_PRODUCTION)
                         : Rules.getJavascriptRule(IS_PRODUCTION),
