@@ -9,19 +9,23 @@
     "javascript",
     "typescript"
   ],
-  "main": "index.js",
+
+  "types": "./lib/kiwui-project.d.ts",
   "bin": {
     "kiwui-scripts": "dist/bin/index.js"
   },
   "files": [
     "dist",
+    "lib",
     "README.md",
     "LICENSE"
   ],
+
   "scripts": {
     "build": "tsc",
     "reset:plugin": "rmdir /s /q node_modules\\kiwui-babel-plugin && npm i"
   },
+
   "devDependencies": {
     "@babel/plugin-syntax-dynamic-import": "^7.8.3",
     "@types/babel__core": "^7.20.1",
@@ -65,6 +69,7 @@
     "webpack-dev-server": "^4.15.1",
     "workbox-webpack-plugin": "^7.0.0"
   },
+
   "homepage": "https://github.com/sebastien-gervilla/kiwui-scripts#readme",
   "repository": {
     "type": "git",

@@ -26,10 +26,10 @@ export const loadEnvironment = () => {
         // Don't include `.env.local` for `test` environment
         // since normally you expect tests to produce the same
         // results for everyone
-        NODE_ENV !== 'test' && `${paths.dotenv}.local`,
+        `${paths.dotenv}.local`, // TODO: In TEST mode, this shouldn't be included
         `${paths.dotenv}.${NODE_ENV}`,
         paths.dotenv,
-    ].filter(Boolean) as string[];
+    ];
 
     // Load environment variables from .env* files. 
     // Suppress warnings using silent if this file is missing. 
