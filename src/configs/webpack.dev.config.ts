@@ -91,15 +91,7 @@ export const getDevelopmentConfig = ({ useTypescript, webpackAliases, environmen
             },
             {
                 oneOf: [
-                    {
-                        test: [/\.jpe?g$/, /\.png$/, /\.svg$/, /\.gif$/, /\.avif$/, /\.bmp$/],
-                        type: 'asset',
-                        parser: {
-                            dataUrlCondition: {
-                                maxSize: environment.imageInlineSizeLimit,
-                            },
-                        },
-                    },
+                    Rules.getAssetsRule(environment.imageInlineSizeLimit),
                     useTypescript
                         ? Rules.getTypescriptRule(IS_PRODUCTION)
                         : Rules.getJavascriptRule(IS_PRODUCTION),
@@ -129,24 +121,32 @@ export const getDevelopmentConfig = ({ useTypescript, webpackAliases, environmen
         ],
     },
     plugins: [
+        // Generates the `index.html` file with the injected <script>
         new HtmlWebpackPlugin({
             inject: true,
             template: paths.html
         }),
+
+        // Makes application environment variables available in index.html
+        new InterpolateHtmlPlugin(environment.application),
+
+        // Makes application environment variables available to the JS code
+        new webpack.DefinePlugin(environment.applicationStringyfied),
+
         // TODO: Remove this from dev when possible (currently causes errors)
         new MiniCssExtractPlugin({
             filename: 'static/css/[name].css',
             chunkFilename: 'static/css/[name].chunk.css',
         }),
-        new InterpolateHtmlPlugin(environment.application),
-        new webpack.DefinePlugin(environment.applicationStringyfied),
+
         // Optimize when using moment.js
         // https://github.com/jmblog/how-to-optimize-momentjs-with-webpack
         new webpack.IgnorePlugin({
             resourceRegExp: /^\.\/locale$/,
             contextRegExp: /moment$/,
         }),
-        // TODO: More of them
+
+        // Typescript type checking
         useTypescript &&
             new TsCheckerPlugin({
                 async: IS_PRODUCTION,
@@ -185,6 +185,7 @@ export const getDevelopmentConfig = ({ useTypescript, webpackAliases, environmen
                     ],
                 }
             }),
+        
         // TODO: ESLINT
     ].filter(Boolean)
 });
