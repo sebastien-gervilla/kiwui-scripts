@@ -91,9 +91,8 @@ export const getDevelopmentConfig = ({ useTypescript, webpackAliases, environmen
             },
             {
                 oneOf: [
-                    // TODO: Avif Support
                     {
-                        test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/, /\.svg$/],
+                        test: [/\.jpe?g$/, /\.png$/, /\.svg$/, /\.gif$/, /\.avif$/, /\.bmp$/],
                         type: 'asset',
                         parser: {
                             dataUrlCondition: {
