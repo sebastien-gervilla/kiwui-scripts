@@ -92,16 +92,7 @@ export const getProductionConfig = ({ useTypescript, webpackAliases, environment
             },
             {
                 oneOf: [
-                    // TODO: Avif Support
-                    {
-                        test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/, /\.svg$/],
-                        type: 'asset',
-                        parser: {
-                            dataUrlCondition: {
-                                maxSize: 10000, // TODO: Let user decide
-                            },
-                        },
-                    },
+                    Rules.getAssetsRule(environment.imageInlineSizeLimit),
                     useTypescript
                         ? Rules.getTypescriptRule(IS_PRODUCTION)
                         : Rules.getJavascriptRule(IS_PRODUCTION),
@@ -131,6 +122,7 @@ export const getProductionConfig = ({ useTypescript, webpackAliases, environment
         ],
     },
     plugins: [
+        // Generates the `index.html` file with the injected <script>
         new HtmlWebpackPlugin({
             inject: true,
             template: paths.html,
@@ -147,18 +139,27 @@ export const getProductionConfig = ({ useTypescript, webpackAliases, environment
                 minifyURLs: true,
             },
         }),
+        
+        // Makes application environment variables available in index.html
         new InterpolateHtmlPlugin(environment.application),
+        
+        // Makes application environment variables available to the JS code
         new webpack.DefinePlugin(environment.applicationStringyfied),
+        
         new MiniCssExtractPlugin({
             filename: 'static/css/[name].[contenthash:8].css',
             chunkFilename: 'static/css/[name].[contenthash:8].chunk.css',
         }),
+
         // Optimize when using moment.js
         // https://github.com/jmblog/how-to-optimize-momentjs-with-webpack
         new webpack.IgnorePlugin({
             resourceRegExp: /^\.\/locale$/,
             contextRegExp: /moment$/,
         }),
+
+        // Generate a service worker script that will precache, and keep up to date,
+        // the HTML & assets that are part of the webpack build.
         existsSync(paths.serviceWorker) &&
             new WorkboxWebpackPlugin.InjectManifest({
                 swSrc: paths.serviceWorker,
@@ -166,6 +167,8 @@ export const getProductionConfig = ({ useTypescript, webpackAliases, environment
                 exclude: [/\.map$/, /asset-manifest\.json$/, /LICENSE/],
                 maximumFileSizeToCacheInBytes: 5 * 1024 * 1024,
             }),
+        
+        // Typescript type checking
         useTypescript &&
             new TsCheckerPlugin({
                 async: IS_PRODUCTION,
@@ -204,6 +207,7 @@ export const getProductionConfig = ({ useTypescript, webpackAliases, environment
                     ],
                 }
             }),
+            
         // TODO: ESLINT
     ].filter(Boolean)
 });

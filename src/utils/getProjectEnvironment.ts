@@ -9,11 +9,15 @@ export const getProjectEnvironment = (): ProjectEnvironment => {
     const useSourceMap = process.env.GENERATE_SOURCEMAP !== 'false';
     const disableESLintPlugin = process.env.DISABLE_ESLINT_PLUGIN === 'true';
     const emitErrorsAsWarnings = process.env.ESLINT_NO_DEV_ERRORS === 'true';
+    const imageInlineSizeLimit = parseInt(
+        process.env.IMAGE_INLINE_SIZE_LIMIT || '10000'
+    );
 
     return {
         useSourceMap,
         disableESLintPlugin,
         emitErrorsAsWarnings,
+        imageInlineSizeLimit,
         ...getApplicationEnvironment()
     }
 }
