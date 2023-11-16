@@ -1,1 +1,1 @@
-export type Command = 'start' | 'build';
+export type Command = 'dev' | 'start' | 'build';

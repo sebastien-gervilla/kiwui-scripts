@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { build, start } from "../scripts";
+import { dev, start, build } from "../scripts";
 import { Command } from "../types";
 
 const COMMANDS: Command[] = ['start', 'build'];
@@ -18,6 +18,10 @@ process.on('unhandledRejection', error => {
         throw new Error("Command doesn't exist.")
 
     switch (command) {
+        case 'dev':
+            dev();
+            break;
+
         case 'start':
             start();
             break;
