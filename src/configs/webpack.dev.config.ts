@@ -96,7 +96,7 @@ export const getDevelopmentConfig = ({ useTypescript, webpackAliases, environmen
                         type: 'asset',
                         parser: {
                             dataUrlCondition: {
-                                maxSize: 10000, // TODO: Let user decide
+                                maxSize: environment.imageInlineSizeLimit,
                             },
                         },
                     },
