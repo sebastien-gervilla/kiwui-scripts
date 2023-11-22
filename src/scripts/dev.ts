@@ -16,11 +16,32 @@ export const dev = () => {
     const projectConfig = getProjectConfig();
     const config = getDevelopmentConfig(projectConfig);
 
-    const { PORT = 3000 } = process.env;
+    const { PORT = 3000, HOST = '0.0.0.0' } = process.env;
     const devServerOptions: Configuration = {
-        host: 'localhost',
+        // Enable gzip compression of generated files.
+        compress: true,
+        static: {
+            directory: paths.publicUrlOrPath,
+            publicPath: [paths.publicUrlOrPath]
+        },
+        client: {
+            // TODO: Websockets ?
+            overlay: {
+                errors: true,
+                warnings: false,
+            },
+        },
+        devMiddleware: {
+            publicPath: paths.publicUrlOrPath.slice(0, -1),
+        },
+        
+        host: HOST,
         port: PORT,
-        hot: true
+        hot: true,
+        historyApiFallback: {
+            disableDotRule: true,
+            index: paths.publicUrlOrPath
+        }
     };
 
     const compiler = webpack(config);
