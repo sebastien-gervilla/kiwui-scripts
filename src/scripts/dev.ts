@@ -21,7 +21,7 @@ export const dev = () => {
         // Enable gzip compression of generated files.
         compress: true,
         static: {
-            directory: paths.publicUrlOrPath,
+            directory: paths.public,
             publicPath: [paths.publicUrlOrPath]
         },
         client: {
