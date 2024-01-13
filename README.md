@@ -1,10 +1,10 @@
 # Kiwui's scripts
 
-This package provides scripts for kiwui projects developpement and deployment.
+This package provides scripts for kiwui projects development and deployment.
 
-## Developpement
+## Development
 
-To run a developpment server, simply use :
+To run a development server, simply use :
 
 ```bash
 npm run dev
