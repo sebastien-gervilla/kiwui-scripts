@@ -21,15 +21,16 @@ export const getProjectConfig = (): ProjectConfig => {
     // If there's a tsconfig.json we assume it's a TypeScript project 
     // The configuration will then be based on tsconfig.json
     if (hasTsConfig) {
-      const ts = require(resolve.sync('typescript', {
-        basedir: paths.modules,
-      }));
-      config = ts.readConfigFile(paths.tsConfig, ts.sys.readFile).config;
-      // Otherwise we'll check if there is jsconfig.json
-      // for non TS projects.
-    } else if (hasJsConfig) {
-      config = require(paths.jsConfig);
-    }
+        const ts = require(resolve.sync('typescript', {
+            basedir: paths.modules,
+        }));
+        
+        config = ts.readConfigFile(paths.tsConfig, ts.sys.readFile).config;
+
+        // Otherwise we'll check if there is jsconfig.json
+        // for non TS projects.
+    } else if (hasJsConfig)
+        config = require(paths.jsConfig);
   
     config = config || {};
     const options = config.compilerOptions || {};

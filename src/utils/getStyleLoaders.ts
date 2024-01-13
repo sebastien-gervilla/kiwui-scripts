@@ -43,10 +43,7 @@ export const getStyleLoaders = (cssOptions: Object, isEnvProduction: boolean, us
                                 },
                                 stage: 3,
                             },
-                        ],
-                        // Resets css with default options, 
-                        // which allows support for browserslist (package.json)
-                        'postcss-normalize',
+                        ]
                     ]
                 },
                 sourceMap: isEnvProduction ? useSourceMap : false,
