@@ -15,6 +15,7 @@ export interface ProjectEnvironment {
     useSourceMap: boolean
     disableESLintPlugin: boolean
     emitErrorsAsWarnings: boolean
+    imageInlineSizeLimit: number
 }
 
 export interface Environment {
